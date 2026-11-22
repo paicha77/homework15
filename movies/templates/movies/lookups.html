@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Movie Database | Django ORM</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            font-family: Arial, sans-serif;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #312e81, #1e1b4b);
+            padding: 65px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 45px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #cbd5e1;
+            font-size: 17px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 35px 0 20px;
+            color: #a5b4fc;
+        }
+
+        .lookup-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 25px;
+            height: 100%;
+            transition: 0.3s;
+        }
+
+        .lookup-card:hover {
+            transform: translateY(-5px);
+            border-color: #818cf8;
+        }
+
+        .lookup-card h3 {
+            color: #818cf8;
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .lookup-card ul {
+            padding-left: 20px;
+        }
+
+        .lookup-card li {
+            color: #e2e8f0;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .lookup-card strong {
+            color: #93c5fd;
+        }
+
+        .number {
+            color: #c4b5fd;
+            margin-right: 7px;
+        }
+
+        .empty {
+            color: #94a3b8;
+            font-style: italic;
+            list-style: none;
+            margin-left: -20px;
+        }
+
+        footer {
+            background: #020617;
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            margin-top: 60px;
+        }
+
+        @media(max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="hero">
+        <h1>🎬 Movie Database</h1>
+        <p>Django ORM Lookup Operations</p>
+        <p>Movies • Viewers • Reviews</p>
+    </header>
+
+
+    <main class="main-container">
+
+        <h2 class="section-title">Text Lookups</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">01.</span> Exact</h3>
+
+                    <ul>
+                        {% for movie in movie_exact %}
+                            <li>
+                                <strong>Title:</strong> {{ movie.title }}<br>
+                                <strong>Genre:</strong> {{ movie.genre }}<br>
+                                <strong>Duration:</strong> {{ movie.duration_minutes }} minutes<br>
+                                <strong>Rating:</strong> {{ movie.rating }}
+                            </li>
+                        {% empty %}
+                            <li class="empty">No movies found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">02.</span> Contains</h3>
+
+                    <ul>
+                        {% for viewer in viewers_contains_lastname %}
+                            <li>
+                                {{ viewer.first_name }} {{ viewer.last_name }}<br>
+                                {{ viewer.email }}
+                            </li>
+                        {% empty %}
+                            <li class="empty">No viewers found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">03.</span> Startswith</h3>
+
+                    <ul>
+                        {% for movie in genre_starts %}
+                            <li>{{ movie.title }}</li>
+                        {% empty %}
+                            <li class="empty">No movies found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">04.</span> Endswith</h3>
+
+                    <ul>
+                        {% for viewer in email_ends %}
+                            <li>
+                                {{ viewer.first_name }} {{ viewer.last_name }}<br>
+                                {{ viewer.email }}
+                            </li>
+                        {% empty %}
+                            <li class="empty">No viewers found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">Number Lookups</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">05.</span> Greater Than (GT)</h3>
+
+                    <ul>
+                        {% for movie in long_movies %}
+                            <li>
+                                {{ movie.title }} —
+                                {{ movie.duration_minutes }} minutes
+                            </li>
+                        {% empty %}
+                            <li class="empty">No movies found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">06.</span> Greater Than or Equal (GTE)</h3>
+
+                    <ul>
+                        {% for review in high_score_reviews %}
+                            <li>
+                                <strong>{{ review.movie.title }}</strong><br>
+
+                                Viewer:
+                                {% if review.viewer %}
+                                    {{ review.viewer.first_name }}
+                                    {{ review.viewer.last_name }}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
+
+                                <br>
+                                Score: {{ review.score }}
+                            </li>
+                        {% empty %}
+                            <li class="empty">No reviews found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">07.</span> Less Than (LT)</h3>
+
+                    <ul>
+                        {% for movie in low_rating_movies %}
+                            <li>
+                                {{ movie.title }} — {{ movie.rating }}
+                            </li>
+                        {% empty %}
+                            <li class="empty">No movies found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">08.</span> Less Than or Equal (LTE)</h3>
+
+                    <ul>
+                        {% for viewer in young_viewers %}
+                            <li>
+                                {{ viewer.first_name }}
+                                {{ viewer.last_name }} —
+                                {{ viewer.age }} years
+                            </li>
+                        {% empty %}
+                            <li class="empty">No viewers found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">09.</span> Range</h3>
+
+                    <ul>
+                        {% for movie in medium_length_movies %}
+                            <li>
+                                {{ movie.title }} —
+                                {{ movie.duration_minutes }} minutes
+                            </li>
+                        {% empty %}
+                            <li class="empty">No movies found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">Other Lookups</h2>
+
+        <div class="row g-4">
+
+            <!-- 10 IN -->
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">10.</span> In</h3>
+
+                    <ul>
+                        {% for movie in movies_in_list %}
+                            <li>{{ movie.title }}</li>
+                        {% empty %}
+                            <li class="empty">No movies found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- 11 ISNULL -->
+            <div class="col-md-6">
+                <div class="lookup-card">
+                    <h3><span class="number">11.</span> Isnull</h3>
+
+                    <ul>
+                        {% for review in reviews_without_viewer %}
+                            <li>
+                                {{ review.movie.title }} —
+                                Score: {{ review.score }}
+                            </li>
+                        {% empty %}
+                            <li class="empty">No reviews found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        <p>Movie Database | Django ORM Project</p>
+        <p>2026 • All 11 Lookup Operations</p>
+    </footer>
+
+</body>
+</html>
